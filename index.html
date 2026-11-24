@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101827">
+  <meta name="description" content="A simple personal expense tracker that keeps your data on your device.">
+  <title>My Expense Tracker</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Expense Tracker home">
+        <span class="brand-mark">₹</span>
+        <span><strong>Expense Tracker</strong><small>Personal finance, made simple</small></span>
+      </a>
+      <button id="installBtn" class="btn btn-quiet hidden" type="button">Install app</button>
+    </header>
+
+    <main>
+      <section class="welcome">
+        <div><p class="eyebrow" id="todayLabel">YOUR MONEY OVERVIEW</p><h1>Dashboard</h1><p class="muted">Track your money. Make better decisions.</p></div>
+        <button class="btn btn-primary" id="addTopBtn" type="button"><span>＋</span> Add transaction</button>
+      </section>
+
+      <section class="summary-grid" aria-label="Account summary">
+        <article class="summary-card balance-card"><div class="card-label">Total balance <span>◉</span></div><div class="amount" id="balanceValue">₹0.00</div><div class="card-foot">Income minus expenses</div></article>
+        <article class="summary-card"><div class="card-label">Total income <span class="icon-income">↗</span></div><div class="amount" id="incomeValue">₹0.00</div><div class="card-foot">Money received</div></article>
+        <article class="summary-card"><div class="card-label">Total expenses <span class="icon-expense">↘</span></div><div class="amount" id="expenseValue">₹0.00</div><div class="card-foot">Money spent</div></article>
+      </section>
+
+      <section class="content-grid">
+        <div class="panel transactions-panel">
+          <div class="panel-heading"><div><h2>Recent transactions</h2><p class="muted">Your latest income and expenses</p></div><button id="exportBtn" class="btn btn-outline" type="button">↓ Export CSV</button></div>
+          <div class="filters">
+            <label class="search-wrap"><span>⌕</span><input id="searchInput" type="search" placeholder="Search transactions…" aria-label="Search transactions"></label>
+            <select id="typeFilter" aria-label="Filter by type"><option value="all">All types</option><option value="expense">Expenses</option><option value="income">Income</option></select>
+            <select id="categoryFilter" aria-label="Filter by category"><option value="all">All categories</option></select>
+          </div>
+          <div id="transactionList" class="transaction-list"></div>
+          <p id="emptyState" class="empty-state">No transactions yet. Add your first transaction to get started.</p>
+        </div>
+
+        <aside class="side-column">
+          <section class="panel budget-panel">
+            <div class="panel-heading"><div><h2>Monthly budget</h2><p class="muted">Set a spending limit</p></div><span class="budget-icon">◎</span></div>
+            <label class="field-label" for="budgetInput">Budget amount (₹)</label>
+            <div class="budget-edit"><input id="budgetInput" type="number" min="0" step="1" placeholder="e.g. 15000"><button class="btn btn-primary" id="saveBudgetBtn" type="button">Save</button></div>
+            <div class="budget-stats"><span id="budgetSpent">₹0 spent this month</span><strong id="budgetPercent">No budget</strong></div>
+            <div class="progress-track"><div id="budgetProgress" class="progress-fill"></div></div>
+            <p class="hint" id="budgetHint">Choose a monthly budget to track your spending.</p>
+          </section>
+          <section class="panel breakdown-panel">
+            <div class="panel-heading"><div><h2>Spending breakdown</h2><p class="muted">This month by category</p></div></div>
+            <div id="categoryBreakdown" class="breakdown-list"><p class="hint">Your category summary will appear here.</p></div>
+          </section>
+        </aside>
+      </section>
+      <p class="privacy-note">🔒 Your transactions are stored locally in this browser on this device. Export a backup regularly.</p>
+    </main>
+    <footer>Made for your everyday money management · <span id="year"></span></footer>
+  </div>
+
+  <dialog id="transactionDialog">
+    <form id="transactionForm" method="dialog">
+      <div class="dialog-heading"><div><p class="eyebrow">TRANSACTION DETAILS</p><h2 id="dialogTitle">Add transaction</h2></div><button class="icon-btn" type="button" id="closeDialog" aria-label="Close">×</button></div>
+      <input type="hidden" id="transactionId">
+      <div class="type-toggle"><label><input type="radio" name="transactionType" value="expense" checked><span>Expense</span></label><label><input type="radio" name="transactionType" value="income"><span>Income</span></label></div>
+      <label class="field-label" for="titleInput">Title</label><input class="form-control" id="titleInput" maxlength="70" placeholder="e.g. Groceries" required>
+      <div class="form-row"><div><label class="field-label" for="amountInput">Amount (₹)</label><input class="form-control" id="amountInput" type="number" min="0.01" step="0.01" placeholder="0.00" required></div><div><label class="field-label" for="dateInput">Date</label><input class="form-control" id="dateInput" type="date" required></div></div>
+      <label class="field-label" for="categoryInput">Category</label><select class="form-control" id="categoryInput"></select>
+      <label class="field-label" for="noteInput">Note (optional)</label><textarea class="form-control" id="noteInput" rows="2" maxlength="180" placeholder="Add a short note"></textarea>
+      <div class="dialog-actions"><button class="btn btn-outline" type="button" id="cancelDialog">Cancel</button><button class="btn btn-primary" type="submit">Save transaction</button></div>
+    </form>
+  </dialog>
+  <script src="app.js"></script>
+</body>
+</html>
